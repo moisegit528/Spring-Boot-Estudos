@@ -12,7 +12,7 @@ import java.util.UUID;
 
 
 @Data // utilizado para ter getters, setters, ToString, equals, hash e construtor básico.
-@Entity // define a classe como uma entidade.
+@Entity(name = "tb_tasks") // Define a classe como uma entidade. Name - define o nome da tabela no Banco de Dados
 public class TaskModel {
     /**
      * ID
@@ -38,4 +38,6 @@ public class TaskModel {
 
     @CreationTimestamp // Mostra DATA/HORA da criação de cada novo registro no BANCO DE DADOS.
     private LocalDateTime createdAt;
+
+
 }
