@@ -1,17 +1,19 @@
 package com.moisegit.todolist.filter;
 
 import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Component
-public class FilterTaskAuth  implements Filter {
+public class FilterTaskAuth  extends OncePerRequestFilter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println("Chegou no Filtro");
-        chain.doFilter(request,response); // so continua para o controller se passar por aqui.
+        filterChain.doFilter(request,response);
     }
 }
