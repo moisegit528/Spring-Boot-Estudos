@@ -24,13 +24,13 @@ public class FilterTaskAuth  extends OncePerRequestFilter {
 
         // ["Usuario:" + username > moisesspring]
         // ["Password:" + password > 12345]
-        /*String[] credentials = authString.split(":");
+        String[] credentials = authString.split(":");
         String username = credentials[0];
         String password = credentials[1];
         System.out.println("AUTHORIZATION");
         System.out.println("Usuário: " + username);
         System.out.println("Password: " + password);
-*/
+
         // validar usuário
 
         // validar senha
