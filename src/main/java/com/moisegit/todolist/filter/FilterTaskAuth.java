@@ -1,8 +1,11 @@
 package com.moisegit.todolist.filter;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.moisegit.todolist.user.IUserRepository;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -12,31 +15,45 @@ import java.util.Base64;
 @Component
 public class FilterTaskAuth  extends OncePerRequestFilter {
 
+    @Autowired
+    private IUserRepository userRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // pegar a autenticação (usuário e senha)
-        var authorization = request.getHeader("Authorization");
+            var servletPath = request.getServletPath();
+            if(servletPath.equals("/tasks/")) {
+                // pegar a autenticação (usuário e senha)
+                var authorization = request.getHeader("Authorization");
 
-        String authString = new String(
-                Base64.getDecoder().decode(authorization.replace("Basic ", ""))
-        );
+                String authString = new String(
+                        Base64.getDecoder().decode(authorization.replace("Basic ", ""))
+                );
+                // ["Usuario:" + username > moisesspring]
+                // ["Password:" + password > 12345]
+                String[] credentials = authString.split(":");
+                String username = credentials[0];
+                String password = credentials[1];
+                System.out.println("AUTHORIZATION");
+                System.out.println("Usuário: " + username);
+                System.out.println("Password: " + password);
 
-        // ["Usuario:" + username > moisesspring]
-        // ["Password:" + password > 12345]
-        String[] credentials = authString.split(":");
-        String username = credentials[0];
-        String password = credentials[1];
-        System.out.println("AUTHORIZATION");
-        System.out.println("Usuário: " + username);
-        System.out.println("Password: " + password);
-
-        // validar usuário
-
-        // validar senha
-
-        // segue viagem
-
-        filterChain.doFilter(request,response);
+                // validar usuário
+                var user = this.userRepository.findByUsername(username);
+                if (user == null) { // Se usuário não existir no banco de dados!
+                    response.sendError(401);
+                    return;
+                }
+                // validar senha
+                var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
+                if (passwordVerify.verified) {
+                    filterChain.doFilter(request, response);
+                } else {
+                    response.sendError(401);
+                }
+                // segue viagem
+            }else{
+                filterChain.doFilter(request, response);
+            }
     }
 }
