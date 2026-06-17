@@ -30,14 +30,13 @@ public class TaskModel {
 
     @Column(length = 50) // limitando a 50 caracteres
     private String title;
-    private LocalDateTime StartTime;
-    private LocalDateTime EndTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String priority;
 
     private UUID idUser; // estou gerando um ID para o usuário
 
     @CreationTimestamp // Mostra DATA/HORA da criação de cada novo registro no BANCO DE DADOS.
     private LocalDateTime createdAt;
-
 
 }

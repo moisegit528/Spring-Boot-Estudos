@@ -22,16 +22,16 @@ public class ITaskController {
 
     @PostMapping("/")
     public ResponseEntity create(@RequestBody TaskModel taskModel, HttpServletRequest request) {// TaskModel(entidade), create(função), taskModel(variável)
-       var idUser = request.getAttribute("idUser");
-       taskModel.setIdUser((UUID) idUser);
+        var idUser = request.getAttribute("idUser");
+        taskModel.setIdUser((UUID) idUser);
 
-       var currentDate = LocalDateTime.now();
-       if(currentDate.isAfter(taskModel.getStartTime()) || currentDate.isAfter(taskModel.getEndTime())) {
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A data de ínicio / data de término deve ser maior do que a data atual");
-       }
+        var currentDate = LocalDateTime.now();  // data atual
+        if (currentDate.isAfter(taskModel.getStartTime()) || currentDate.isAfter(taskModel.getEndTime())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Deve inserir uma data/hora de ínicio e término, maior que a atual. ");
+        }
 
-       var task = this.taskRepository.save(taskModel);
-       return ResponseEntity.status(HttpStatus.OK).body(task);
+        var task = this.taskRepository.save(taskModel);
+        return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 }
 
