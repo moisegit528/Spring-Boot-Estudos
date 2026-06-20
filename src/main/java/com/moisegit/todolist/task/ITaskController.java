@@ -23,6 +23,7 @@ public class ITaskController {
         var idUser = request.getAttribute("idUser");
         taskModel.setIdUser((UUID) idUser);
 
+        // validação de data/hora
         var currentDate = LocalDateTime.now();  // data atual
         if (currentDate.isAfter(taskModel.getStartTime()) || currentDate.isAfter(taskModel.getEndTime())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Deve inserir uma data/hora de ínicio e término, maior que a atual. ");
@@ -35,11 +36,20 @@ public class ITaskController {
         var task = this.taskRepository.save(taskModel);
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
+    // funcionalidade para usuário listar todas as tarefas que possui com base na sua credencial
     @GetMapping("/")
     public List<TaskModel> list(HttpServletRequest request) {
         var idUser = request.getAttribute("idUser");
         var tasks = this.taskRepository.findByidUser((UUID) idUser);
         return tasks;
+    }
+    // funcionalidade para usuário fazer update/atualização da tarefa se necessário.
+    @PutMapping("/{id}")
+    public TaskModel update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request){
+        var idUser = request.getAttribute("idUser"); // variável criada para guardar idUser do usuário.
+        taskModel.setIdUser((UUID) idUser); // garante que a tarefa atualizada, continue vinculado ao usuário autenticado
+        taskModel.setId(id); // mantém o ID "identificador" existente do banco de dados, garantindo update e não uma nova tarefa.
+        return this.taskRepository.save(taskModel); // salve no banco de dados e devolva ao cliente atualizado.
     }
 }
 
