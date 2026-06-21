@@ -1,6 +1,7 @@
 package com.moisegit.todolist.task;
 
 
+import com.moisegit.todolist.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,9 +48,12 @@ public class ITaskController {
     @PutMapping("/{id}")
     public TaskModel update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request){
         var idUser = request.getAttribute("idUser"); // variável criada para guardar idUser do usuário.
-        taskModel.setIdUser((UUID) idUser); // garante que a tarefa atualizada, continue vinculado ao usuário autenticado
-        taskModel.setId(id); // mantém o ID "identificador" existente do banco de dados, garantindo update e não uma nova tarefa.
-        return this.taskRepository.save(taskModel); // salve no banco de dados e devolva ao cliente atualizado.
+
+        var task = this.taskRepository.findById(id).orElse(null);
+
+        Utils.copyNonNullProperties(taskModel, task);
+
+        return this.taskRepository.save(task); // salve no banco de dados e devolva ao cliente atualizado.
     }
 }
 
