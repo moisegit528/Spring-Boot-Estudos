@@ -37,6 +37,7 @@ public class ITaskController {
         var task = this.taskRepository.save(taskModel);
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
+
     // funcionalidade para usuário listar todas as tarefas que possui com base na sua credencial
     @GetMapping("/")
     public List<TaskModel> list(HttpServletRequest request) {
@@ -46,14 +47,25 @@ public class ITaskController {
     }
     // funcionalidade para usuário fazer update/atualização da tarefa se necessário.
     @PutMapping("/{id}")
-    public TaskModel update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request){
+    public ResponseEntity update(@RequestBody TaskModel taskModel, @PathVariable UUID id, HttpServletRequest request){
         var idUser = request.getAttribute("idUser"); // variável criada para guardar idUser do usuário.
 
         var task = this.taskRepository.findById(id).orElse(null);
 
+        if (task == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tarefa não encontrada");
+        }
+
+        var idUser2 = request.getAttribute("idUser");
+
+        if (!task.getIdUser().equals(idUser)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não tem permissão para alterar essa tarefa");
+        }
+
         Utils.copyNonNullProperties(taskModel, task);
 
-        return this.taskRepository.save(task); // salve no banco de dados e devolva ao cliente atualizado.
+        var taskUpdated = this.taskRepository.save(task);
+        return ResponseEntity.ok().body(taskUpdated); // salve no banco de dados e devolva ao cliente atualizado.
     }
 }
 

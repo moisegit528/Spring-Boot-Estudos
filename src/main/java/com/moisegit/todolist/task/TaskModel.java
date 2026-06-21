@@ -39,4 +39,12 @@ public class TaskModel {
     @CreationTimestamp // Mostra DATA/HORA da criação de cada novo registro no BANCO DE DADOS.
     private LocalDateTime createdAt;
 
+    // tratar erro
+    public void setTitle(String title) throws Exception{
+        if(title.length() > 50){
+            throw new Exception("Campo title deve conter 50 caracteres no máximo.");
+        }
+        this.title = title;
+    }
+
 }
