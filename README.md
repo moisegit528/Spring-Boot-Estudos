@@ -56,7 +56,16 @@ Spring-Boot-Estudos/
 └── README.md
 
 
-🎬 [Assista à demonstração do projeto](https://raw.githubusercontent.com/moisegit528/Spring-Boot-Estudos/main/src/main/java/com/moisegit/todolist/Videos-Projeto/Criando-Lista-de-Tarefas-Banco-de-Dados.mp4)
+## 🎥 Demonstração do Projeto
+
+Aqui estão alguns vídeos mostrando partes do desenvolvimento do projeto:
+
+- [Criando Usuário no Banco de Dados](https://www.youtube.com/watch?v=VxtTKkZRme8)
+- [Criando Lista de Tarefas no Banco de Dados](https://www.youtube.com/watch?v=-EKS0wCXknk)
+- [Validando Usuário e Senha](https://www.youtube.com/watch?v=oI38OrTPrww)
+- [Validando Data](https://www.youtube.com/watch?v=rtlmQigL1EQ)
+- [Atualizando Tarefa (PUT)](https://www.youtube.com/watch?v=2Xg-tWrVCrM)
+
 
 
 👨‍💻 Autor
