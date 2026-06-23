@@ -55,7 +55,8 @@ Spring-Boot-Estudos/
 ├── LICENSE
 └── README.md
 
-🎬 [Assista pequenos trechos do projeto](Videos-Projeto/Criando-Lista-de-Tarefas-Banco-de-Dados.mp4)
+
+🎬 [Assista à demonstração do projeto](src/main/java/com/moisegit/todolist/Videos-Projeto/Criando-Lista-de-Tarefas-Banco-de-Dados.mp4)
 
 
 👨‍💻 Autor
